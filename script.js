@@ -21,7 +21,19 @@ window.addEventListener('DOMContentLoaded',()=>{
         getItem(localStorage.getItem("key"))
     }
     else{
-        localStorage.setItem('key',endpoint)
+       alert('Key is missing');
+       
+       let key=prompt('Add Key')
+       if(key==""){
+        location.reload()
+        return 
+       }
+       else{
+           if(key!=null && confirm('Sure!')){
+               localStorage.setItem('key',key)
+           }
+       }
+        
     }
 })
 
