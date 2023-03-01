@@ -24,7 +24,8 @@ body{
     margin-right: 15px;
 }
 .nav h1{
-    font-family: 'Poppins', sans-serif;
+
+    font-family: 'Mynerve', cursive;
     text-shadow: 2px 2px black;
 }
 
@@ -62,6 +63,8 @@ body{
 .tabname{
     text-align: center;
     margin: 0;
+    font-family: 'Poppins', sans-serif;
+    
 }
 .tab1{
     border-right: 2px solid black;
