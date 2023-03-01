@@ -48,15 +48,15 @@ function getItem(endpoint){
 //Add Item
 document.querySelector('.addBtn').addEventListener('click',(e)=>{
     e.preventDefault();
-    let name=document.querySelector('.inpName').value
+    let price=document.querySelector('.inpPrice').value
     let order=document.querySelector('.inpOrder').value
     let table=document.querySelector('.inpTable').value
-    if(name=="" || order=="" || table=="Select Table"){
+    if(price=="" || order=="" || table=="Select Table"){
         alert('Add Input Fields');
         return
     }
     axios.post(`${endpoint}/resturent`,{
-        "name":name,
+        "price":price,
         "order":order,
         "table":table
     })
@@ -112,9 +112,9 @@ function addTolist(res){
     newElement.classList.add('user')
     newElement.innerHTML=`
     <p style="display: none;">${res._id}</p>
-    <p>${res.name}</p>
-    <p style="font-weight: bolder; margin-left: 2px; margin-right: 2px;"> - </p>
     <p>${res.order}</p>
+    <p style="font-weight: bolder; margin-left: 2px; margin-right: 2px;"> - </p>
+    <p>${res.price}</p>
     <button my="asd" class="btn btn-sm btn-danger">X</button>
     `
     let table=res.table
