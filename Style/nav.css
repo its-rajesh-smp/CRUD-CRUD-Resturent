@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
+/* =======================Google Font */
+
+.nav_div {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid rgb(224, 221, 221);
+}
+
+.nav_div .logo img {
+  width: 90px;
+  margin-left: 100px;
+}
+.nav_div .user i {
+  font-size: 30px;
+  margin-right: 100px;
+  color: rgb(32, 32, 32);
+  text-shadow: 1px 1px rgb(118, 223, 255);
+}
+.brand_name{
+  color: #ff6301;
+  font-family: 'Cinzel', serif;
+}

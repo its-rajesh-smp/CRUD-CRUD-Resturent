@@ -1,0 +1,36 @@
+.form_div{
+    display: flex;
+    justify-content: center;
+    background-color: #E0144C;
+    padding: 10px;
+    box-shadow: 1px 1px 5px black;
+}
+
+.inpOrderItem , .inpPrice{
+    padding: 5px;
+    box-shadow: 1px 1px 2px black;
+}
+
+
+
+.inpOrderItem{
+    margin-right: 5px;
+}
+.inpPrice{
+    margin-right: 5px;
+    margin-left: 5px;
+    
+}
+.inpOption{
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 5px;
+    box-shadow: 1px 1px 2px black;
+    cursor: pointer;
+}
+.btnTake{
+    margin-left: 5px;
+    padding: 5px;
+    box-shadow: 1px 1px 2px black;
+    cursor: pointer;
+}

@@ -1,135 +1,124 @@
+//! Curd Key
+let key = localStorage.getItem("key");
 
-document.querySelector('.changeKey').addEventListener("dblclick",(e)=>{
-    let a=prompt('Add Crud Link')
-    if(a==""){return}
-    else{
-        if(confirm("Confirm To Add Key")){
-            localStorage.setItem('key',a)
-            location.reload()
+//! Set New Key
+document.querySelector(".bx-user").addEventListener("click", () => {
+  setKey();
+});
 
-        }
-    }
-    
-})
+//! GetData
+window.addEventListener("DOMContentLoaded", () => {
+  getData();
+});
+//! PostData
+document.querySelector(".btnTake").addEventListener("click", (e) => {
+  e.preventDefault();
+  const item = document.querySelector(".inpOrderItem").value;
+  const price = document.querySelector(".inpPrice").value;
+  const table = document.querySelector(".inpOption").value;
 
+  if (item == "" || price == "" || table == "Select Table") {
+    return;
+  }
+  document.querySelector(".loader").style.display = "block";
+  postData(item, price, table);
+});
+//! RemoveData
+document.querySelector(".table_div").addEventListener("click", (e) => {
+  if (e.target.classList.contains("orderDelete")) {
+    document.querySelector(".loader").style.display = "block";
+    deleteData(e.target.parentElement.parentElement);
+  }
+});
 
-let endpoint=localStorage.getItem('key');
-
-
-window.addEventListener('DOMContentLoaded',()=>{
-    if(localStorage.getItem('key')){
-        getItem(localStorage.getItem("key"))
-    }
-    else{
-       alert('Key is missing');
-       
-       let key=prompt('Add Key')
-       if(key==""){
-        location.reload()
-        return 
-       }
-       else{
-           if(key!=null && confirm('Sure!')){
-               localStorage.setItem('key',key)
-           }
-       }
-        
-    }
-})
-
-
-
-
-// Get Item
-function getItem(endpoint){
-    axios.get(`${endpoint}/resturent`)
-    .then((res)=>{
-        res.data.forEach(item => {
-            addTolist(item)
-        });
-    })
-    .catch((error)=>{
-        console.warn(error);
-    })
+//todo Set Key
+function setKey() {
+  let inp = prompt("Add The Key");
+  if (inp != "" && inp != null) {
+    localStorage.setItem("key", inp + "/orders");
+    window.location.reload();
+  } else {
+    alert("Missing Input Value!");
+    return;
+  }
 }
 
+// Get Data
+async function getData() {
+  try {
+    await axios.get(key).then((res, rej) => {
+      document.querySelector(".loader").style.display = "none";
+      res.data.forEach((items) => {
+        printData(items);
+      });
+    });
+  } catch (error) {
+    console.log("Something Went Wrong || Check The Endpoint");
+    console.log(error.code);
+    document.querySelector(".loader").style.display = "none";
+    alert("Error... \nClick On User Icon || Change The CURD key");
+  }
+}
 
+// PostData
+async function postData(inp_item, inp_price, inp_tableNo) {
+  try {
+    await axios
+      .post(key, {
+        orderItem: inp_item,
+        orderPrice: inp_price,
+        tableNo: inp_tableNo,
+      })
+      .then((res, rej) => {
+        console.log(res);
+        printData(res.data);
+        document.querySelector(".loader").style.display = "none";
+      });
+  } catch (error) {
+    console.log(error.code);
+    document.querySelector(".loader").style.display = "none";
+  }
+}
 
+// DeleteData
+async function deleteData(element) {
+  const id = element.children[0].innerText;
+  try {
+    await axios.delete(`${key}/${id}`).then((res, rej) => {
+      let valueToDeduct = parseInt(element.children[2].children[0].textContent);
+      let valueToDeductFrom = element.parentElement.classList[0];
+      let previousValue = parseInt(
+        document.querySelector(`.${valueToDeductFrom}_amount`).textContent
+      );
 
+      document.querySelector(`.${valueToDeductFrom}_amount`).textContent =
+        previousValue - valueToDeduct + " $";
 
-//Add Item
-document.querySelector('.addBtn').addEventListener('click',(e)=>{
-    e.preventDefault();
-    let price=document.querySelector('.inpPrice').value
-    let order=document.querySelector('.inpOrder').value
-    let table=document.querySelector('.inpTable').value
-    if(price=="" || order=="" || table=="Select Table"){
-        alert('Add Input Fields');
-        return
-    }
-    axios.post(`${endpoint}/resturent`,{
-        "price":price,
-        "order":order,
-        "table":table
-    })
-    .then((res)=>{
-        addTolist(res.data)
-    })
-    .catch((error)=>{
-        console.warn(error);
-    })
-})
+      element.remove();
+      document.querySelector(".loader").style.display = "none";
+    });
+  } catch (error) {
+    console.log(error);
+    document.querySelector(".loader").style.display = "none";
+  }
+}
 
+// Printing Values
+function printData(res) {
+  let newElement = document.createElement("div");
+  newElement.classList.add("item");
+  newElement.innerHTML = `
+    <div style="display: none;" class="div_id" >${res._id}</div>
+    <div class="div_orderItem" ><p class="orderItem">${res.orderItem}</p></div>
+    <div class="div_orderPrice" ><span class="orderPrice">${res.orderPrice}</span><span> $</span></div>
+    <div class="div_orderDelete" ><button class="orderDelete">X</button></div>
+    `;
+  document.querySelector(`.${res.tableNo}`).append(newElement);
 
+  let value = parseInt(
+    document.querySelector(`.${res.tableNo}_amount`).innerText.replace(" $", "")
+  );
+  value = value + parseInt(res.orderPrice);
 
-
-
-// Delete Item
-document.querySelector('.table_container').addEventListener('click',(e)=>{
-    e.preventDefault()
-    if(e.target.classList.contains("btn-danger")){
-        let target=e.target.parentElement.children[0].innerText
-        
-        axios.delete(`${endpoint}/resturent/${target}`)
-            .then(()=>{
-                e.target.parentElement.remove()
-            })
-            .catch((error)=>{
-                console.warn(error);
-            })
-    }
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function addTolist(res){
-    let newElement=document.createElement('div')
-    newElement.classList.add('user')
-    newElement.innerHTML=`
-    <p style="display: none;">${res._id}</p>
-    <p>${res.order}</p>
-    <p style="font-weight: bolder; margin-left: 2px; margin-right: 2px;"> - </p>
-    <p>${res.price}</p>
-    <button my="asd" class="btn btn-sm btn-danger">X</button>
-    `
-    let table=res.table
-    document.querySelector('.'+table).append(newElement)
-
+  document.querySelector(`.${res.tableNo}_amount`).textContent = value + " $";
 }
