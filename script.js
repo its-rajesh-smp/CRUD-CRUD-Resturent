@@ -56,7 +56,9 @@ async function getData() {
     console.log("Something Went Wrong || Check The Endpoint");
     console.log(error.code);
     document.querySelector(".loader").style.display = "none";
-    alert("Error... \nClick On User Icon || Change The CURD key");
+    alert(
+      "Error... \nClick On User Icon || Change The CURD url || ex: https://crudcrud.com/api/8c9d51e016ca40d1801a50e88262d485"
+    );
   }
 }
 
